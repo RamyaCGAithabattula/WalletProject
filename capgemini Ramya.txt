@@ -1,0 +1,674 @@
+select *
+from tab;
+
+------gives list of tables
+
+
+select *
+from departments;
+
+
+-----------
+
+select department_id,department_name
+rom departments;
+
+-----------
+
+
+SQL*Plus: Release 11.2.0.2.0 Production on Thu Jun 20 09:48:58 2019
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+Enter user-name: hr
+Enter password:
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> create table account
+  2  (
+  3  aid number(8) primary key,
+  4  mobileno number(10) unique not null,
+  5  accountholder varchar2(30) not null,
+  6  balance number(8,2) check(balance>=1000.00)
+  7  );
+
+Table created.
+
+SQL> insert into account values(100,9999999999,'king',24000.00);
+
+1 row created.
+
+SQL> savepoint A;
+
+Savepoint created.
+
+SQL> insert into acount values(101,9999999994,'raja',50000.00);
+insert into acount values(101,9999999994,'raja',50000.00)
+            *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> insert into account values(101,9999999994,'raja',50000.00);
+
+1 row created.
+
+SQL> insert into account values(102,9999899994,'ram',30000.00);
+
+1 row created.
+
+SQL> savepoint B;
+
+Savepoint created.
+
+SQL> update account set balance=3000 where aid=100;
+
+1 row updated.
+
+SQL> update account set balance=3000.00,accountholder='king khan' where aid=100;
+
+
+1 row updated.
+
+SQL> select *
+  2  from account;
+
+       AID   MOBILENO ACCOUNTHOLDER                     BALANCE
+---------- ---------- ------------------------------ ----------
+       100 9999999999 king khan                            3000
+       101 9999999994 raja                                50000
+       102 9999899994 ram                                 30000
+
+SQL> delete from account;
+
+3 rows deleted.
+
+SQL> rollback to B;
+
+Rollback complete.
+
+SQL> select * from account;
+
+       AID   MOBILENO ACCOUNTHOLDER                     BALANCE
+---------- ---------- ------------------------------ ----------
+       100 9999999999 king                                24000
+       101 9999999994 raja                                50000
+       102 9999899994 ram                                 30000
+
+SQL> commit;
+
+Commit complete.
+
+SQL> insert into account values(101,9999999994,'raja',50000.00);
+insert into account values(101,9999999994,'raja',50000.00)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (HR.SYS_C007216) violated
+
+
+SQL> insert into account values(101,9999997994,'raja',500.00);
+insert into account values(101,9999997994,'raja',500.00)
+*
+ERROR at line 1:
+ORA-02290: check constraint (HR.SYS_C007215) violated
+
+
+SQL> insert into account values(null,9999997994,'raja',500.00);
+insert into account values(null,9999997994,'raja',500.00)
+                           *
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("HR"."ACCOUNT"."AID")
+
+
+SQL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Everett                         3900                03-MAR-05 SH_CLERK
+           50
+
+McCain                          3200                01-JUL-06 SH_CLERK
+           50
+
+Jones                           2800                17-MAR-07 SH_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Walsh                           3100                24-APR-06 SH_CLERK
+           50
+
+Feeney                          3000                23-MAY-06 SH_CLERK
+           50
+
+OConnell                        2600                21-JUN-07 SH_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Grant                           2600                13-JAN-08 SH_CLERK
+           50
+
+Whalen                          4400                17-SEP-03 AD_ASST
+           10
+
+Hartstein                      13000                17-FEB-04 MK_MAN
+           20
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Fay                             6000                17-AUG-05 MK_REP
+           20
+
+Mavris                          6500                07-JUN-02 HR_REP
+           40
+
+Baer                           10000                07-JUN-02 PR_REP
+           70
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Higgins                        12008                07-JUN-02 AC_MGR
+          110
+
+Gietz                           8300                07-JUN-02 AC_ACCOUNT
+          110
+
+
+107 rows selected.
+
+SQL> select last_name;
+select last_name
+               *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select last_name,
+  2  salary,
+  3  commission_pct,
+  4  hire_date,
+  5  job_id,
+  6  department_id
+  7  from employees
+  8  where department_id=50;
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Weiss                           8000                18-JUL-04 ST_MAN
+           50
+
+Fripp                           8200                10-APR-05 ST_MAN
+           50
+
+Kaufling                        7900                01-MAY-03 ST_MAN
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Vollman                         6500                10-OCT-05 ST_MAN
+           50
+
+Mourgos                         5800                16-NOV-07 ST_MAN
+           50
+
+Nayer                           3200                16-JUL-05 ST_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Mikkilineni                     2700                28-SEP-06 ST_CLERK
+           50
+
+Landry                          2400                14-JAN-07 ST_CLERK
+           50
+
+Markle                          2200                08-MAR-08 ST_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Bissot                          3300                20-AUG-05 ST_CLERK
+           50
+
+Atkinson                        2800                30-OCT-05 ST_CLERK
+           50
+
+Marlow                          2500                16-FEB-05 ST_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Olson                           2100                10-APR-07 ST_CLERK
+           50
+
+Mallin                          3300                14-JUN-04 ST_CLERK
+           50
+
+Rogers                          2900                26-AUG-06 ST_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Gee                             2400                12-DEC-07 ST_CLERK
+           50
+
+Philtanker                      2200                06-FEB-08 ST_CLERK
+           50
+
+Ladwig                          3600                14-JUL-03 ST_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Stiles                          3200                26-OCT-05 ST_CLERK
+           50
+
+Seo                             2700                12-FEB-06 ST_CLERK
+           50
+
+Patel                           2500                06-APR-06 ST_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Rajs                            3500                17-OCT-03 ST_CLERK
+           50
+
+Davies                          3100                29-JAN-05 ST_CLERK
+           50
+
+Matos                           2600                15-MAR-06 ST_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Vargas                          2500                09-JUL-06 ST_CLERK
+           50
+
+Taylor                          3200                24-JAN-06 SH_CLERK
+           50
+
+Fleaur                          3100                23-FEB-06 SH_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Sullivan                        2500                21-JUN-07 SH_CLERK
+           50
+
+Geoni                           2800                03-FEB-08 SH_CLERK
+           50
+
+Sarchand                        4200                27-JAN-04 SH_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Bull                            4100                20-FEB-05 SH_CLERK
+           50
+
+Dellinger                       3400                24-JUN-06 SH_CLERK
+           50
+
+Cabrio                          3000                07-FEB-07 SH_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Chung                           3800                14-JUN-05 SH_CLERK
+           50
+
+Dilly                           3600                13-AUG-05 SH_CLERK
+           50
+
+Gates                           2900                11-JUL-06 SH_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Perkins                         2500                19-DEC-07 SH_CLERK
+           50
+
+Bell                            4000                04-FEB-04 SH_CLERK
+           50
+
+Everett                         3900                03-MAR-05 SH_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+McCain                          3200                01-JUL-06 SH_CLERK
+           50
+
+Jones                           2800                17-MAR-07 SH_CLERK
+           50
+
+Walsh                           3100                24-APR-06 SH_CLERK
+           50
+
+
+LAST_NAME                     SALARY COMMISSION_PCT HIRE_DATE JOB_ID
+------------------------- ---------- -------------- --------- ----------
+DEPARTMENT_ID
+-------------
+Feeney                          3000                23-MAY-06 SH_CLERK
+           50
+
+OConnell                        2600                21-JUN-07 SH_CLERK
+           50
+
+Grant                           2600                13-JAN-08 SH_CLERK
+           50
+
+
+45 rows selected.
+
+SQL>select last_name, upper(last_name),lower(last_name)
+from employees;
+
+-----------------------
+
+select count(*) as totalcount
+from employees;
+
+-----------------------
+
+select avg( nvl (commission_pct,0)) as totalcount,
+count( nvl(commission_pct,0))
+from employees;
+
+-----------------------
+
+select sum(salary) as total,
+count( salary)
+from employees
+group by department_id;
+
+------------------------
+
+
+select department_id,sum(salary) as total,
+count( salary)
+from employees
+group by department_id;
+
+
+-------------------------
+
+
+
+select department_id,job_id,sum(salary) as total,
+count( salary)
+from employees
+group by department_id,job_id
+order by department_id,job_id;
+
+
+--------------------------
+
+
+select department_id,job_id,sum(salary) as total,
+count( salary)
+from employees
+having sum(salary)>=50000
+group by department_id,job_id
+order by department_id,job_id;
+
+
+----------------------------
+
+
+select count(distinct job_id) from employeees;
+
+
+-----------------------------
+
+equi join
+standard join= inner join==> matched records
+
+select employees.employee_id,
+       employees.last_name,employees.department_id,
+departments.department_id,departments.department_name
+from employees,departments
+where employees.department_id=departments.department_id;
+
+
+
+------------------------------
+
+select employees.employee_id,
+       employees.last_name,employees.department_id,
+departments.department_id,departments.department_name
+from employees join departments
+on employees.department_id=departments.department_id;
+
+
+
+------------------------------
+
+table alise 
+
+select e.employee_id,
+e.last_name,e.department_id,
+d.department_id,d.department_name
+from employees e join departments d
+on e.department_id = d.department_id;
+
+
+-------------------------------
+
+equi join--natural join
+performs join on common columns between tables
+--> common in-> same column name,same data type,same size
+--> common cols displayed only once
+--> e.department_id=d.department_id and e.manager_id=d.manager_id 
+
+
+---------------------------------
+  
+
+select * from employees natural join departments;
+
+
+
+---------------------------------
+
+
+
+
+
+select * from employees join departments using (department_id);
+
+
+
+
+----------------------------------
+outer join----matched and unmatched 
+
+
+select e.employee_id,
+e.last_name,e.department_id,
+d.department_id,d.department_name
+from employees e full outer join departments d
+on e.department_id=d.department_id;
+-----------------------------------
+
+self join
+
+select w.employee_id,
+       w.last_name,
+       w.manager_id,
+       m.employee_id,
+       m.last_name
+from employees w join employees m
+on w.manager_id=m.employee_id;
+
+------------------------------------
+
+self join and non equi join
+
+select w.employee_id,
+       w.last_name,
+       w.manager_id,
+       w.hire_date,
+       m.employee_id,
+       m.last_name,
+       m.hire_date
+from employees w join employees m
+on w.manager_id=m.employee_id and w.hire_date<m.hire_date;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
